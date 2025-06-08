@@ -1,5 +1,6 @@
 package com.socialCommerce.backend_social.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,13 @@ public class ImageData {
     private String name;
     private String type;
     @Lob
-    @Column(name = "imagedata", length = 1000)
+    @Column(name = "imagedata", columnDefinition = "LONGBLOB")
     private byte[] imageData;
 
+
     @ManyToOne
+    @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
+
 }

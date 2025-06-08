@@ -24,9 +24,10 @@ public class ImageDataController {
                 .body(uploadImage);
     }
 
-    @GetMapping("/image/{fileName}")
-    public ResponseEntity<?> downloadImage(@PathVariable String fileName){
-        byte[] imageData=service.downloadImage(fileName);
+    //pass the id and get image
+    @GetMapping("/image/{id}")
+    public ResponseEntity<?> downloadImage(@PathVariable Long id){
+        byte[] imageData=service.downloadImage(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);

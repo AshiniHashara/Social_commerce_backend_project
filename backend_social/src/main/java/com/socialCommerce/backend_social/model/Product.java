@@ -1,5 +1,6 @@
 package com.socialCommerce.backend_social.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,13 @@ public class Product {
     private boolean available;
     private int quantity;
 
-    @OneToMany(mappedBy = "product")
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ImageData> imageDatas;
+    private long imageID;
+
+
 }
+
+

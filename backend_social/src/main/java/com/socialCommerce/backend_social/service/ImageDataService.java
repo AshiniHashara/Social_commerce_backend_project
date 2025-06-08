@@ -37,8 +37,8 @@ public class ImageDataService {
     }
 
 
-    public byte[] downloadImage(String fileName){
-        Optional<ImageData> dbimageData = repo.findByName(fileName);
+    public byte[] downloadImage(Long id){
+        Optional<ImageData> dbimageData = repo.findById(id);
         byte[] images = ImageUtils.decompressImage(dbimageData.get().getImageData());
         return images;
     }
