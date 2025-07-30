@@ -36,6 +36,15 @@ public class ProductService {
         return repo.findById(id).orElse(new Product());
     }
 
+//    public Optional<Product> getProductbyId(int id) {
+//        return repo.findById(id);
+//    }
+
+//    public Product getProductbyId(int id) {
+//        return repo.findById(id);
+//
+//    }
+
     public Product getProductByIdWithImage(int id) {
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
@@ -53,7 +62,11 @@ public class ProductService {
             dto.setId(product.getId());
             dto.setName(product.getName());
             dto.setDescription(product.getDescription());
-            // Set other fields...
+            dto.setPrice(product.getPrice());
+            dto.setCategory_id(product.getCategory_id());
+            dto.setSubcategory_id(product.getSubcategory_id());
+            dto.getQuantity(product.getQuantity());
+            dto.getReleaseDate(product.getRelease_date());
 
             List<String> imageStrings = product.getImageDatas().stream()
                     .map(image -> "data:" + image.getType() + ";base64," +
@@ -69,7 +82,36 @@ public class ProductService {
         }).collect(Collectors.toList());
     }
 
+    public ProductDTO getProductDTOById(Long id) {
+        Optional<Product> productOpt = repo.findByIdWithImages(id); // custom method
+        if (productOpt.isPresent()) {
+            Product product = productOpt.get();
+            ProductDTO dto = new ProductDTO();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setDescription(product.getDescription());
+            dto.setPrice(product.getPrice());
+            dto.setCategory_id(product.getCategory_id());
+            dto.setSubcategory_id(product.getSubcategory_id());
+            dto.getQuantity(product.getQuantity());
 
+
+            List<String> imageStrings = product.getImageDatas().stream()
+                    .map(image -> "data:" + image.getType() + ";base64," +
+                            Base64.getEncoder().encodeToString(image.getImageData()))
+                    .collect(Collectors.toList());
+
+            List<String> imageIDs = product.getImageDatas().stream()
+                    .map(image -> String.valueOf(image.getId()))
+                    .collect(Collectors.toList());
+
+            dto.setImageUrls(imageStrings);
+            dto.setimageID(imageIDs);
+            return dto;
+        } else {
+            return null;
+        }
+    }
 
 
 }

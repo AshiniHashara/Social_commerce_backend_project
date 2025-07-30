@@ -41,12 +41,12 @@ public class ProductController {
         return service.getProductById(id);
     }
 
-    //get product details with image
-    @GetMapping("/product/image/{id}")
-    public ResponseEntity<Product> getProductWithImages(@PathVariable int id) {
-        Product product = service.getProductByIdWithImage(id);
-        return ResponseEntity.ok(product);
-    }
+//    //get product details with image
+//    @GetMapping("/product/image/{id}")
+//    public ResponseEntity<Product> getProductWithImages(@PathVariable int id) {
+//        Product product = service.getProductByIdWithImage(id);
+//        return ResponseEntity.ok(product);
+//    }
 
 
     //get products and image id
@@ -55,5 +55,18 @@ public class ProductController {
         List<ProductDTO> products = service.getAllProductDTOs();
         return ResponseEntity.ok(products);
     }
+
+    //get specific product by sending product id
+    @GetMapping("/product/image/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+        ProductDTO productDTO = service.getProductDTOById(id);
+        if (productDTO != null) {
+            return ResponseEntity.ok(productDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 
 }

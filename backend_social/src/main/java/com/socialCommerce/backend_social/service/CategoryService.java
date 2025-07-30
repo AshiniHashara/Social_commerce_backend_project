@@ -21,4 +21,9 @@ public class CategoryService {
     public Category addCategory(Category category) throws IOException {
         return categoryRepo.save(category);
     }
+
+    public Category getCategoryById(int id) {
+        return categoryRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+    }
 }

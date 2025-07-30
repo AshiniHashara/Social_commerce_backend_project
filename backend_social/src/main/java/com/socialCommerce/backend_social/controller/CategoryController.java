@@ -33,4 +33,15 @@ public class CategoryController {
         List<Category> categories = categoryService.getAllCategory();
         return ResponseEntity.ok(categories);
     }
+    @GetMapping("/category/{id}")
+    public ResponseEntity<String> getCategoryNameById(@PathVariable int id) {
+        try {
+            Category category = categoryService.getCategoryById(id);
+            return ResponseEntity.ok(category.getName());
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

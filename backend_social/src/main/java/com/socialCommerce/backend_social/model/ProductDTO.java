@@ -12,11 +12,12 @@ public class ProductDTO {
     private int category_id;
     private int subcategory_id;
     private BigDecimal price;
-    private Date releaseDate;
+    private Date release_date;
     private boolean available;
     private int quantity;
     private List<String> imageID;
     private List<String> imageUrls;
+
 
     // other fields
 
@@ -68,12 +69,12 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
+    public Date getReleaseDate(Date releaseDate) {
+        return release_date;
     }
 
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleaseDate(Date release_date) {
+        this.release_date = release_date;
     }
 
     public boolean isAvailable() {
@@ -84,8 +85,8 @@ public class ProductDTO {
         this.available = available;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantity(int quantity) {
+        return this.quantity;
     }
 
     public void setQuantity(int quantity) {

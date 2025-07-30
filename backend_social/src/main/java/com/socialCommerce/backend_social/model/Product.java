@@ -27,7 +27,7 @@ public class Product {
     private int category_id;
     private int subcategory_id;
     private BigDecimal price;
-    private Date releaseDate;
+    private Date release_date;
     private boolean available;
     private int quantity;
 
@@ -36,7 +36,6 @@ public class Product {
     @JsonManagedReference
     private List<ImageData> imageDatas;
     private long imageID;
-
 
 }
 
