@@ -37,40 +37,6 @@ public class UserService {
         return repo.save(user);
     }
 
-    //return service.generateAccessToken(user.getUsername());
-
-//    public AuthResponse verify(User user) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-//        );
-//        if (authentication.isAuthenticated()) {
-//            String accessToken = service.generateAccessToken(user.getUsername());
-//            String refreshToken = service.generateRefreshToken(user.getUsername());
-//
-//            saveUserToken(accessToken, refreshToken, user);
-//
-//            return new AuthResponse(accessToken, refreshToken);
-//        }
-//        throw new RuntimeException("Invalid login");
-//    }
-//public AuthResponse verify(User user) {
-//    Authentication authentication = authenticationManager.authenticate(
-//            new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-//    );
-//
-//    if (authentication.isAuthenticated()) {
-//        String accessToken = service.generateAccessToken(user.getUsername());
-//        String refreshToken = service.generateRefreshToken(user.getUsername());
-//
-//        // optionally save tokens in DB
-//        //saveUserToken(accessToken, refreshToken, user);
-//
-//        return new AuthResponse(accessToken, refreshToken);
-//    }
-//
-//    throw new RuntimeException("Invalid login credentials");
-//}
-
     public AuthResponse verify(User loginPayload) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -82,24 +48,24 @@ public class UserService {
             throw new RuntimeException("Invalid login");
         }
 
-        // 1) Load the managed user from DB
+
         User user = repo.findByUsername(loginPayload.getUsername());
         if (user == null) {
             throw new RuntimeException("User not found after auth");
         }
 
-        // 2) Generate tokens
-        String accessToken = service.generateAccessToken(user.getUsername());
+
+        String accessToken = service.generateAccessToken(user.getUsername(),user.getRole().name());
         String refreshToken = service.generateRefreshToken(user.getUsername());
 
-        // 3) Revoke old tokens for this user (optional but recommended)
+
         List<Token> oldTokens = tokenRepo.findAllValidTokensByUser(user.getId());
         if (!oldTokens.isEmpty()) {
             oldTokens.forEach(t -> t.setLoggedOut(true));
             tokenRepo.saveAll(oldTokens);
         }
 
-        // 4) Save the new token row
+
         Token token = new Token();
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
@@ -107,8 +73,8 @@ public class UserService {
         token.setUser(user);
         tokenRepo.save(token);
 
-        // 5) Return both tokens to frontend
-        return new AuthResponse(accessToken, refreshToken);
+
+        return new AuthResponse(accessToken, refreshToken ,user.getUsername(), user.getRole().name());
     }
 
 }

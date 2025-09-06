@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,7 +58,9 @@ public class ProductController {
     }
 
     //get specific product by sending product id
+
     @GetMapping("/product/image/{id}")
+    //@PreAuthorize("hasRole('RETAILER') or hasRole('WHOLESELLER')")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         ProductDTO productDTO = service.getProductDTOById(id);
         if (productDTO != null) {

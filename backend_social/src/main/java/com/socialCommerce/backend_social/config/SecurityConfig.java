@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -35,8 +36,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(customizer -> customizer.disable());
-        http.authorizeHttpRequests(request -> request
-                .requestMatchers("/login", "/Register", "/api/product/image","/api/image/**").permitAll()
+        http.cors(Customizer.withDefaults());
+
+//        http.authorizeHttpRequests(request -> request
+//                        .anyRequest().permitAll()  // ✅ allow all requests without authentication
+//                );
+       http.authorizeHttpRequests(request -> request
+                .requestMatchers("/login", "/Register", "/api/product/image","/api/image/**","/api/category","/api/category/{id}","/api/product/image/{id}").permitAll()
+               // ✅ only wholeseller can post product
+               .requestMatchers("/api/product").hasAuthority("WHOLESELLER")
+
+               // ✅ wholeseller + retailer can access retailer endpoints
+               .requestMatchers("/api/retailer/**","/api/whatsapp").hasAnyAuthority("WHOLESELLER", "RETAILER")
+
+               // ✅ all other requests require authentication
                 .anyRequest().authenticated());
 //                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
         //http.httpBasic(Customizer.withDefaults()); //this is for form login
@@ -58,18 +71,26 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
 
     }
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); // remove the "ROLE_" prefix
+    }
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/image/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("GET");
+                registry.addMapping("/**") // allow all endpoints
+                        .allowedOrigins("http://localhost:5173") // your frontend origin
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
+
 
 
 }

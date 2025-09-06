@@ -6,6 +6,7 @@ import com.socialCommerce.backend_social.service.RetailerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class RetailerController {
     @Autowired
     private RetailerService retailerService;
 
-    @PostMapping("/retailer")
+    @PostMapping("/retailer/margin")
     public ResponseEntity<?> addRetailerDetails(@RequestBody Retailer retailer) {
         try {
             Retailer savedRetailer = retailerService.addRetailer(retailer);
