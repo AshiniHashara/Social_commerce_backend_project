@@ -3,6 +3,7 @@ package com.socialCommerce.backend_social.controller;
 import com.socialCommerce.backend_social.model.AuthResponse;
 import com.socialCommerce.backend_social.model.User;
 import com.socialCommerce.backend_social.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/Register")
-    public User Register(@RequestBody User user){
+    public User Register(@Valid @RequestBody User user){
 
         return service.register(user);
     }

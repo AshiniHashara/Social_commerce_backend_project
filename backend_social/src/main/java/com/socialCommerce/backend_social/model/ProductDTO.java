@@ -69,11 +69,16 @@ public class ProductDTO {
         this.price = price;
     }
 
+    public Date getRelease_date() {
+        return release_date;
+    }
+
+
     public Date getReleaseDate(Date releaseDate) {
         return release_date;
     }
 
-    public void setReleaseDate(Date release_date) {
+    public void setRelease_date(Date release_date) {
         this.release_date = release_date;
     }
 
@@ -88,6 +93,12 @@ public class ProductDTO {
     public int getQuantity(int quantity) {
         return this.quantity;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;

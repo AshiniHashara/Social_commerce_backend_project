@@ -67,6 +67,9 @@ public class ProductService {
             dto.setSubcategory_id(product.getSubcategory_id());
             dto.getQuantity(product.getQuantity());
             dto.getReleaseDate(product.getRelease_date());
+            dto.setQuantity(product.getQuantity());
+            dto.setRelease_date(product.getRelease_date());
+
 
             List<String> imageStrings = product.getImageDatas().stream()
                     .map(image -> "data:" + image.getType() + ";base64," +
@@ -94,6 +97,9 @@ public class ProductService {
             dto.setCategory_id(product.getCategory_id());
             dto.setSubcategory_id(product.getSubcategory_id());
             dto.getQuantity(product.getQuantity());
+            dto.setQuantity(product.getQuantity());
+            dto.setRelease_date(product.getRelease_date());
+
 
 
             List<String> imageStrings = product.getImageDatas().stream()
